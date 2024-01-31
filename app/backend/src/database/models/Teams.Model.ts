@@ -8,4 +8,12 @@ export default class TeamModel implements TeamModelInterface {
     const dbTeams = await this.model.findAll();
     return dbTeams;
   }
+
+  async findByPk(id: number): Promise<SequelizeTeams | null> {
+    const dbTeam = await this.model.findByPk(id);
+    if (!dbTeam) {
+      return null;
+    }
+    return dbTeam;
+  }
 }
