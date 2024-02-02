@@ -11,7 +11,8 @@ export default class UserController {
     const { email, password } = req.body;
     const user = await this.newService.login(email, password);
     res.status(statusHTTPMap(user.status)).json(user.data);
-}
+  }
+
   static async validateTokenRole(req: Request, res: Response) {
     const { role } = res.locals.auth;
     return res.status(200).json({ role });

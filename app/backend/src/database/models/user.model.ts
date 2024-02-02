@@ -4,10 +4,9 @@ import UsersModelSeq from './Sequelize.User.Model';
 
 export default class UserModel implements LoginInterface {
   private model = UsersModelSeq;
-    
-  async allUsers (): Promise<Users[]> {
-      const users = await this.model.findAll();
-      return users; 
+  async allUsers(): Promise<Users[]> {
+    const users = await this.model.findAll();
+    return users;
   }
 
   async findOne(email: string): Promise<Users | null> {
