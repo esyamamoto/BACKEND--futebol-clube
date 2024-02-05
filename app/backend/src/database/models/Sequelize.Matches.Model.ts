@@ -8,8 +8,8 @@ import {
 import db from '.';
 import Teams from './Sequelize.Teams.model';
 
-class Matches extends Model<InferAttributes<Matches>,
-InferCreationAttributes<Matches>> {
+class SequelizeMatches extends Model<InferAttributes<SequelizeMatches>,
+InferCreationAttributes<SequelizeMatches>> {
   declare id: CreationOptional<number>;
   declare homeTeamId: number;
   declare homeTeamGoals: number;
@@ -18,7 +18,7 @@ InferCreationAttributes<Matches>> {
   declare inProgress: boolean;
 }
 
-Matches.init({
+SequelizeMatches.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -56,14 +56,14 @@ Matches.init({
   underscored: true,
 });
 
-Matches.belongsTo(Teams, {
+SequelizeMatches.belongsTo(Teams, {
   foreignKey: 'homeTeamId',
   as: 'homeTeam',
 });
 
-Matches.belongsTo(Teams, {
+SequelizeMatches.belongsTo(Teams, {
   foreignKey: 'awayTeamId',
   as: 'awayTeam',
 });
 
-export default Matches;
+export default SequelizeMatches;
