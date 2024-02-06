@@ -21,7 +21,7 @@ export default class MatchController {
     const { id } = req.params;
     const match = req.body;
     const matches = await this.serviceX.finishedMatches(id, match);
-    res.status(mapStatusHTTP(matches.status)).json(matches.message);
+    res.status(mapStatusHTTP(matches.status)).json(matches);
   }
 
   public async updatedMatches(req: Request, res: Response) {
@@ -30,5 +30,10 @@ export default class MatchController {
     const { status, data } = await this
       .serviceX.updatedMatches(homeTeamGoals, awayTeamGoals, id);
     res.status(mapStatusHTTP(status)).json(data);
+  }
+
+  public async createdMatches(req: Request, res: Response) {
+    const { status, data } = await this.serviceX.createdMatch(req.body);
+    return res.status(mapStatusHTTP(status)).json(data);
   }
 }

@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import ValidateMatch from '../middlewares/validateMatch';
 import MatchController from '../controller/matches.controller';
 import ValidateToken from '../middlewares/validateToken';
 
@@ -22,6 +23,15 @@ routerInstance.patch(
   ValidateToken.validateToken,
   (req: Request, res: Response) =>
     matchController.finishedMatches(req, res),
+);
+
+// cria partida
+routerInstance.post(
+  '/',
+  ValidateToken.validateToken,
+  ValidateMatch.validateMatch,
+  (req: Request, res: Response) =>
+    matchController.createdMatches(req, res),
 );
 
 export default routerInstance;

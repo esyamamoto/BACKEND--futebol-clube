@@ -5,4 +5,5 @@ export interface MatchModelInterface {
   finishedMatches(id: string, match: MatchesInterface): Promise<MatchesInterface>
   updatedMatches(homeTeamGoals: number, awayTeamGoals: number,
     id: string): Promise<MatchesInterface>
+  createdMatch(props: MatchesInterface): Promise<MatchesInterface>
 }

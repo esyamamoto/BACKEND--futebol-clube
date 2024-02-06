@@ -2,10 +2,12 @@ import { ServiceResponse } from '../Interfaces/serviceResponse';
 import MatchModel from '../database/models/Macthes.Model';
 import { MatchModelInterface } from '../Interfaces/matches.interface.model';
 import { MatchesInterface } from '../Interfaces/macthes.interface';
+import TeamService from './teams.service';
 
 export default class MatchService {
   constructor(
     private model: MatchModelInterface = new MatchModel(),
+    private service = new TeamService(),
   ) {}
 
   public async allMatches(inProgress?: boolean): Promise<ServiceResponse<MatchesInterface[]>> {
@@ -20,7 +22,7 @@ export default class MatchService {
     await this.model.finishedMatches(id, match);
     return {
       status: 'SUCCESSFUL',
-      message: 'Match finished',
+      message: 'Finished',
     };
   }
 
@@ -38,5 +40,17 @@ export default class MatchService {
       status: 'SUCCESSFUL',
       data: 'Match updated',
     };
+  }
+
+  public async createdMatch(props: MatchesInterface): Promise<ServiceResponse<MatchesInterface>> {
+    const { homeTeamId, awayTeamId } = props;
+    const team01 = await this.service.findTeamById(Number(homeTeamId));
+    const team02 = await this.service.findTeamById(Number(awayTeamId));
+
+    if (team01.status === 'NOT_FOUND' || team02.status === 'NOT_FOUND') {
+      return { status: 'NOT_FOUND', data: { message: 'There is no team with such id!' } };
+    }
+    const newMatch = await this.model.createdMatch(props);
+    return { status: 'CREATED', data: newMatch };
   }
 }

@@ -18,13 +18,13 @@ export default class MatchModel implements MatchModelInterface {
     return matches;
   }
 
-  async finishedMatches(id: string): Promise<MatchesInterface> {
-    const match = await this.model.findByPk(id);
-    if (!match) {
+  async finishedMatches(id: string, match: MatchesInterface): Promise<MatchesInterface> {
+    const matches = await this.model.findByPk(id);
+    if (!matches) {
       throw new Error('Match not found');
     }
-    await match.update({ id: match.id, inProgress: false });
-    return match;
+    await matches.update({ id: match.id, inProgress: false });
+    return matches;
   }
 
   async updatedMatches(
@@ -38,5 +38,21 @@ export default class MatchModel implements MatchModelInterface {
     }
     await matchUpdate.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
     return matchUpdate;
+  }
+
+  async createdMatch(props: MatchesInterface): Promise<MatchesInterface> {
+    const { homeTeamId, homeTeamGoals, awayTeamId, awayTeamGoals } = props;
+    try {
+      const newMatch = await this.model.create({
+        homeTeamId,
+        awayTeamId,
+        homeTeamGoals,
+        awayTeamGoals,
+        inProgress: true,
+      });
+      return newMatch;
+    } catch (error) {
+      throw new Error('Error creating match');
+    }
   }
 }
