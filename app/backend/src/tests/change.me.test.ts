@@ -2,44 +2,28 @@ import * as sinon from 'sinon';
 import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
+import ValidateToken from '../middlewares/validateToken';
 
-import { app } from '../app';
-import Example from '../database/models/ExampleModel';
-
-import { Response } from 'superagent';
+import mapStatusHTTP from '../utils/mapStatusHttp';
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('Seu teste', () => {
-  /**
-   * Exemplo do uso de stubs com tipos
-   */
-
-  // let chaiHttpResponse: Response;
-
-  // before(async () => {
-  //   sinon
-  //     .stub(Example, "findOne")
-  //     .resolves({
-  //       ...<Seu mock>
-  //     } as Example);
-  // });
-
-  // after(()=>{
-  //   (Example.findOne as sinon.SinonStub).restore();
-  // })
-
-  // it('...', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app)
-  //      ...
-
-  //   expect(...)
-  // });
-
-  it('Seu sub-teste', () => {
-    expect(false).to.be.eq(true);
+describe('mapStatusHTTP', () => {
+  it('Verifica chamadas HTTPMap', () => {
+    const success = mapStatusHTTP('SUCCESSFUL');
+    const invalid = mapStatusHTTP('INVALID_DATA');
+    const notFound = mapStatusHTTP('NOT_FOUND');
+    const conflict = mapStatusHTTP('CONFLICT');
+    const unauthorized = mapStatusHTTP('UNAUTHORIZED');
+    const created = mapStatusHTTP('CREATED');
+    
+    expect(success).to.equal(200);
+    expect(invalid).to.equal(400);
+    expect(notFound).to.equal(404);
+    expect(conflict).to.equal(409);
+    expect(unauthorized).to.equal(401);
+    expect(created).to.equal(201);
   });
 });

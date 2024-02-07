@@ -19,8 +19,8 @@ const mockTeams = [
 
   const oneTeam = [
     {
-      id: 1,
-      team_name: "Avaí/Kindermann",
+      id: 4,
+      team_name: "Corinthians",
     }
   ]
 
