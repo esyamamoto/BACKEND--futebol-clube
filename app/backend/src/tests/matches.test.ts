@@ -95,6 +95,7 @@ describe('MatchService', function () {
       expect(status).to.be.equal(201)
       expect(body).to.be.deep.equal(matchesMock.NewTeam)
     })
+    
   /*
     it('Deve atualizar uma partida ao acessar /updatedMatches/:id', async function () {
       sinon.stub(MatchService.prototype, 'updatedMatches').resolves({ status: 'SUCCESSFUL', data: 'Match updated' });

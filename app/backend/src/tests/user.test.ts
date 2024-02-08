@@ -3,11 +3,12 @@ import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 
-import { userInvalid, emailInvalid, passwordInvalid, loginOk } from './mocks/user.Mocks';   
+import { userInvalid, emailInvalid, passwordInvalid, loginOk, tokenOk } from './mocks/user.Mocks';   
 import { app } from '../app';
 import SequelizeUserModel from '../database/models/Sequelize.User.Model';
 import ValidateLogin from '../middlewares/validateLogin';
 import UserController from '../controller/user.controller';
+import UserService from '../service/user.service';
 
 chai.use(chaiHttp);
 
@@ -68,6 +69,15 @@ describe('teste users login', () => {
     const { status } = await chai.request(app).get("/login/role").set('Authorization', 'Bearer invalidToken');
     expect(status).to.be.equal(401);
   });
+  /*
+  it('Verifica se no login retorna um token valido', async function() {
+    const userService = new UserService() 
+    const { email, password } = loginOk;
+    const { token } = tokenOk;
 
-  
+    const serviceResponse = await userService.login(email, password);
+
+    expect(serviceResponse.status).to.equal(200);
+    expect(serviceResponse.data).to.deep.equal({ token });  
+}); */
 });

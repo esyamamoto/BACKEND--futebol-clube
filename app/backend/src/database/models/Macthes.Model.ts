@@ -1,6 +1,7 @@
 import { MatchesInterface } from '../../Interfaces/macthes.interface';
 import { MatchModelInterface } from '../../Interfaces/matches.interface.model';
 import SequelizeMatches from './Sequelize.Matches.Model';
+import SequelizeTeams from './Sequelize.Teams.model';
 
 export default class MatchModel implements MatchModelInterface {
   private model = SequelizeMatches;
@@ -15,6 +16,20 @@ export default class MatchModel implements MatchModelInterface {
     if (inProgress !== undefined) {
       return matches.filter((match) => match.inProgress === inProgress);
     }
+    return matches;
+  }
+
+  async matchesFilterProgress(query: string): Promise<MatchesInterface[]> {
+    const matches = await this.model.findAll({
+      where: {
+        inProgress: query === 'true',
+      },
+      include: [
+        { model: SequelizeTeams, as: 'homeTeam', attributes: ['teamName'] },
+        { model: SequelizeTeams, as: 'awayTeam', attributes: ['teamName'] },
+      ],
+      attributes: { exclude: ['home_team_id', 'away_team_id'] },
+    });
     return matches;
   }
 
